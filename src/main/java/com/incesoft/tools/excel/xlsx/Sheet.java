@@ -484,13 +484,9 @@ public class Sheet {
 
 		int rowIndex = -1;
 
-		SheetCommentWriter commentWriter;
-
-		public SheetWriter(XMLStreamWriter xmlWriter,
-				SheetCommentWriter commentWriter) {
+		public SheetWriter(XMLStreamWriter xmlWriter) {
 			super();
 			this.xmlWriter = xmlWriter;
-			this.commentWriter = commentWriter;
 		}
 
 		void writeStart() throws XMLStreamException {
@@ -513,18 +509,7 @@ public class Sheet {
 				xmlWriter.writeAttribute("r:id", settingRid);
 				xmlWriter.writeEndElement();
 			}
-			if (commentWriter.startWriten) {
-				// refer to the vml drawing -- the design sucks
-				// <legacyDrawing r:id="rId3" />
-				if (vmlRid == null)
-					throw new IllegalStateException("vmlRid should not be null");
-				xmlWriter.writeStartElement("legacyDrawing");
-				xmlWriter.writeAttribute("r:id", vmlRid);
-				xmlWriter.writeEndElement();
-			}
 			xmlWriter.writeEndElement();// end worksheet
-			// end the comment if necessary
-			commentWriter.writeEnd();
 		}
 
 		private Cell cell;
@@ -600,8 +585,6 @@ public class Sheet {
 					writer.writeCharacters(String.valueOf(cell.getV()));
 					writer.writeEndElement();
 				}
-				if (cell.getComment() != null)
-					commentWriter.writeComment(row, c, cell.getComment());
 				writer.writeEndElement();// end c
 			}
 		}
@@ -615,15 +598,8 @@ public class Sheet {
 		if (sheetsWriter != null) {
 			throw new IllegalStateException("sheets can only be merged once.");
 		}
-		sheetsWriter = new SheetWriter(writer, new SheetCommentWriter(
-				commentWriter, vmlWriter));
+		sheetsWriter = new SheetWriter(writer);
 		sheetsWriter.writeStart();
-	}
-
-	public boolean isCommentModified() {
-		return this.sheetsWriter != null
-				&& this.sheetsWriter.commentWriter != null
-				&& this.sheetsWriter.commentWriter.startWriten;
 	}
 
 	void writeSheetEnd(String commentRId, String vmlRid, String settingRid)
@@ -648,7 +624,6 @@ public class Sheet {
 	 * xmlns:r=
 	 * "http://schemas.openxmlformats.org/officeDocument/2006/relationships" ><sheetData>
 	 * 
-	 * @param writer
 	 * @throws XMLStreamException
 	 */
 	void mergeSheet() throws XMLStreamException {

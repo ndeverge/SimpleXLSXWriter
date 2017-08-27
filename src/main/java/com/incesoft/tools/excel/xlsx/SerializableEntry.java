@@ -9,5 +9,5 @@ import javax.xml.stream.XMLStreamWriter;
  * 
  */
 public interface SerializableEntry {
-	public void serialize(XMLStreamWriter writer) throws XMLStreamException;
+	void serialize(XMLStreamWriter writer) throws XMLStreamException;
 }

@@ -1,37 +1,12 @@
 package com.incesoft.tools.excel.xlsx;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import javax.xml.stream.*;
+import java.io.*;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * A simple implementation of OOXML(Excel part) to read and modify Excel 2007+
@@ -101,7 +76,7 @@ public class SimpleXLSXWorkbook {
 				this.zipfile.close();
 				this.zipfile = null;
 			} catch (IOException e) {
-				log.error("", e);
+				e.printStackTrace();
 			}
 		this.commiter = null;
 		this.sharedStrings.clear();
@@ -322,7 +297,7 @@ public class SimpleXLSXWorkbook {
 	 * @param parseAllRow
 	 *            true to load all rows;false for lazy loading without memory
 	 *            consuming({@link Sheet#setAddToMemory(boolean)=false}) when
-	 *            doing iterator by {@link Sheet#nextRow()}
+	 *            doing iterator by {@link Sheet()}
 	 * @return
 	 */
 	public Sheet getSheet(int i, boolean parseAllRow) {
@@ -996,23 +971,6 @@ public class SimpleXLSXWorkbook {
 					parts.add("/xl/sharedStrings.xml");
 					parts.add("application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml");
 				}
-				boolean commentModified = false;
-				for (int i = 0; i < wb.sheets.size(); i++) {
-					Sheet s = wb.sheets.get(i);
-					if (s.isCommentModified()) {
-						commentModified = true;
-						// comments
-						parts.add("Override");
-						parts.add("/xl/comments" + (s.getSheetIndex() + 1) + ".xml");
-						parts.add("application/vnd.openxmlformats-officedocument.spreadsheetml.comments+xml");
-						// vml drawings
-					}
-				}
-				if (commentModified) {
-					parts.add("Default");
-					parts.add("vml");
-					parts.add("application/vnd.openxmlformats-officedocument.vmlDrawing");
-				}
 				wb.mergeContentTypes(wb.getReader(PATH_CONTENT_TYPES), writer,
 						parts.toArray(new String[parts.size()]));
 			} catch (Exception e) {
@@ -1063,9 +1021,21 @@ public class SimpleXLSXWorkbook {
 						}
 					}
 					zos.putNextEntry(new ZipEntry(entry.getName()));
-					IOUtils.copy(wb.zipfile.getInputStream(entry), zos);
+					copyLarge(wb.zipfile.getInputStream(entry), zos);
 				}
 			}
+		}
+
+
+		private void copyLarge(InputStream input, OutputStream output) throws IOException {
+			byte[] buffer = new byte[4096];
+			long count = 0L;
+
+			int n;
+			for(boolean var5 = false; -1 != (n = input.read(buffer)); count += (long)n) {
+				output.write(buffer, 0, n);
+			}
+
 		}
 	}
 
@@ -1103,8 +1073,6 @@ public class SimpleXLSXWorkbook {
 		// style.getFill().setFgColor("FF00FF00");
 
 	}
-
-	private static final Log log = LogFactory.getLog(SimpleXLSXWorkbook.class);
 
 	@SuppressWarnings("unchecked")
 	static private class BidirectionMap implements Map {

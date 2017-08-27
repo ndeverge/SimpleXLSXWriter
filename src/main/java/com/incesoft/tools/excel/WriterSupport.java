@@ -1,16 +1,13 @@
 package com.incesoft.tools.excel;
 
+import com.incesoft.tools.excel.support.CellFormat;
+import com.incesoft.tools.excel.support.XLSXWriterSupport;
+
 import java.io.File;
 import java.io.OutputStream;
 
-import com.incesoft.tools.excel.support.CellFormat;
-import com.incesoft.tools.excel.support.XLSWriterSupport;
-import com.incesoft.tools.excel.support.XLSXWriterSupport;
-
 abstract public class WriterSupport {
 
-	public final static int TYPE_XLS = 1;
-	public final static int TYPE_XLSX = 2;
 
 	protected File file;
 
@@ -36,23 +33,16 @@ abstract public class WriterSupport {
 
 	abstract public void close();
 
-	public static WriterSupport newInstance(int type, File f) {
+	public static WriterSupport newInstance(File f) {
 		WriterSupport support = null;
-		if (type == TYPE_XLSX)
-			support = new XLSXWriterSupport();
-		else
-			support = new XLSWriterSupport();
+		support = new XLSXWriterSupport();
 		support.setFile(f);
 		return support;
 	}
 
-	public static WriterSupport newInstance(int type, OutputStream outputStream) {
+	public static WriterSupport newInstance(OutputStream outputStream) {
 		WriterSupport support = null;
-		if (type == TYPE_XLSX)
-			support = new XLSXWriterSupport();
-		else {
-			support = new XLSWriterSupport();
-		}
+		support = new XLSXWriterSupport();
 		support.setOutputStream(outputStream);
 		return support;
 	}

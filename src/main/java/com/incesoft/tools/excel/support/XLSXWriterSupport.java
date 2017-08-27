@@ -1,17 +1,12 @@
 package com.incesoft.tools.excel.support;
 
+import com.incesoft.tools.excel.WriterSupport;
+import com.incesoft.tools.excel.xlsx.*;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
-
-import org.apache.commons.io.IOUtils;
-
-import com.incesoft.tools.excel.WriterSupport;
-import com.incesoft.tools.excel.xlsx.CellStyle;
-import com.incesoft.tools.excel.xlsx.Fill;
-import com.incesoft.tools.excel.xlsx.Font;
-import com.incesoft.tools.excel.xlsx.Sheet;
-import com.incesoft.tools.excel.xlsx.SimpleXLSXWorkbook;
 
 /**
  * @author floyd
@@ -86,10 +81,20 @@ public class XLSXWriterSupport extends WriterSupport {
 			throw new RuntimeException(e);
 		} finally {
 			if (fos != null)
-				IOUtils.closeQuietly(fos);
+				closeQuietly(fos);
 			if (workbook != null)
 				workbook.close();
 		}
+	}
+
+	private void closeQuietly(OutputStream output) {
+		try {
+			if (output != null) {
+				output.close();
+			}
+		} catch (IOException var2) {
+        }
+
 	}
 
 	public void createNewSheet() {
