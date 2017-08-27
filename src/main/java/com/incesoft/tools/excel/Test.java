@@ -3,13 +3,14 @@ package com.incesoft.tools.excel;
 import java.awt.Color;
 import java.io.File;
 
-import com.incesoft.tools.excel.support.CellFormat;
+import com.incesoft.tools.excel.xlsx.CellFormat;
+import com.incesoft.tools.excel.xlsx.XLSXWriterSupport;
 
 public class Test {
 
 	public static void main(String[] args) {
 
-		WriterSupport wxs = WriterSupport.newInstance(new File("out.xlsx"));
+		XLSXWriterSupport wxs = new XLSXWriterSupport(new File("out.xlsx"));
 		wxs.open();
 		wxs.increaseRow();
 		for (int i = 0; i < 5; i++) {

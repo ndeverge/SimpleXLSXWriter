@@ -1,7 +1,4 @@
-package com.incesoft.tools.excel.support;
-
-import com.incesoft.tools.excel.WriterSupport;
-import com.incesoft.tools.excel.xlsx.*;
+package com.incesoft.tools.excel.xlsx;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,19 +9,38 @@ import java.io.OutputStream;
  * @author floyd
  * 
  */
-public class XLSXWriterSupport extends WriterSupport {
-	SimpleXLSXWorkbook workbook;
+public class XLSXWriterSupport {
 
-	public void open() {
+    private  File file;
+
+    private OutputStream output;
+
+	private SimpleXLSXWorkbook workbook;
+
+    private int rowpos = getMaxRowNumOfSheet();
+
+    private int sheetIndex = -1;
+
+    public XLSXWriterSupport(OutputStream outputStream) {
+        super();
+        this.output = outputStream;
+    }
+
+    public XLSXWriterSupport(File file) {
+        super();
+        this.file = file;
+    }
+
+    public void open() {
 		if (getClass().getResource("/empty.xlsx") == null) {
 			throw new IllegalStateException("no empty.xlsx found in classpath");
 		}
 		workbook = new SimpleXLSXWorkbook(new File(getClass().getResource("/empty.xlsx").getFile()));
 	}
 
-	Sheet sheet;
+	private Sheet sheet;
 
-	protected int getMaxRowNumOfSheet() {
+	private int getMaxRowNumOfSheet() {
 		return Integer.MAX_VALUE / 2;
 	}
 
@@ -103,4 +119,14 @@ public class XLSXWriterSupport extends WriterSupport {
 		}
 		sheet = workbook.getSheet(sheetIndex, true);
 	}
+
+    public void increaseRow() {
+        rowpos++;
+
+        if (rowpos > getMaxRowNumOfSheet()) {// 判断是否需要新建一个sheet
+            sheetIndex++;
+            createNewSheet();
+            rowpos = -1;
+        }
+    }
 }

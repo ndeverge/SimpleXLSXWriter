@@ -1,4 +1,4 @@
-package com.incesoft.tools.excel.support;
+package com.incesoft.tools.excel.xlsx;
 
 public class CellFormat {
 	public CellFormat() {
