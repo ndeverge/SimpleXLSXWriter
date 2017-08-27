@@ -418,30 +418,6 @@ public class Sheet {
 		return r;
 	}
 
-	public int modify(int r, int c, RichText text, CellStyle style) {
-		if (c > SheetRowReader.MAX_COLUMN_SPAN - 1) {
-			throw new IllegalArgumentException("column index(" + c
-					+ ") exceeded the limit("
-					+ (SheetRowReader.MAX_COLUMN_SPAN - 1) + ")");
-		}
-		if (r == -1) {
-			r = getModfiedRowLength();
-		} else if (lastCommittedRowLength > 0 && r < lastCommittedRowLength) {
-			throw new IllegalStateException("after merge,only add allowed");
-		}
-		// resize
-		if (r >= modifiedRowLength) {
-			modifiedRowLength = r + 1;
-		}
-		// modify
-		List<ModifyEntry> modified = modifications.get(r);
-		if (modified == null) {
-			modified = new ArrayList<ModifyEntry>();
-			modifications.put(r, modified);
-		}
-		modified.add(new ModifyEntry(r, c, text, style));
-		return r;
-	}
 
 	public void writeDocumentStart(XMLStreamWriter writer)
 			throws XMLStreamException {
@@ -457,17 +433,6 @@ public class Sheet {
 			// if text changed or region font applied
 			SharedStringText text = modification.text;
 			if (text != null) {
-				if (text instanceof RichText) {
-					if (text.getText() == null && cell != null) {
-						if (cell.getValue() == null) {
-							throw new IllegalStateException(
-									"there is no cell content for richtext modification,cell="
-											+ getCellId(modification.r,
-													modification.c));
-						}
-						text.setText(cell.getValue());
-					}
-				}
 				cell.setV(String.valueOf(text.getIndex()));
 				cell.setT("s");
 			}

@@ -111,18 +111,6 @@ public class SimpleXLSXWorkbook {
 	}
 
 	/**
-	 * sharedString -> rich text
-	 * 
-	 * @return
-	 */
-	public RichText createRichText() {
-		RichText text = new RichText();
-		int i = addRichText(text);
-		text.setIndex(i);
-		return text;
-	}
-
-	/**
 	 * sharedString -> plain text
 	 * 
 	 * @param text
@@ -135,14 +123,6 @@ public class SimpleXLSXWorkbook {
 		return sharedStringText;
 	}
 
-	private int addRichText(RichText richText) {
-		if (richText == null) {
-			throw new IllegalArgumentException("null rich text added to sharedStrings");
-		}
-		sharedStrings.put(sharedStringLen++, richText);
-		return sharedStringLen - 1;
-	}
-
 	String getSharedStringValue(int i) {
 		Object obj = sharedStrings.get(i);
 		if (obj instanceof String) {
@@ -150,15 +130,6 @@ public class SimpleXLSXWorkbook {
 		}
 		return null;
 	}
-
-	// int getSharedStringIndex(String string) {
-	// Integer i = (Integer) sharedStrings.inverseBidiMap().get(string);
-	// if (i != null) {
-	// return i;
-	// } else {
-	// return -1;
-	// }
-	// }
 
 	XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 
