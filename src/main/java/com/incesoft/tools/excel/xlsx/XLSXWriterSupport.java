@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 /**
  * @author floyd
@@ -37,10 +38,11 @@ public class XLSXWriterSupport {
             InputStream emptyXLSX = getClass().getResourceAsStream("/empty.xlsx");
             File tempFile = File.createTempFile("empty",".xlsx");
             tempFile.deleteOnExit();
-            Files.copy(emptyXLSX, tempFile.toPath());
+            Files.copy(emptyXLSX, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             workbook = new SimpleXLSXWorkbook(tempFile);
 
         } catch (IOException e) {
+            e.printStackTrace();
             throw new IllegalStateException("no empty.xlsx found in classpath");
         }
     }

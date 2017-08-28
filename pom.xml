@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.incesoft.tools</groupId>
 	<artifactId>SimpleXLSXWriter</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 
     <name>SimpleXLSXWriter</name>
     <description>A really simple API to write Excel files (2007 and above), with no external dependencies. A forked of https://code.google.com/p/sjxslx/.</description>
