@@ -43,6 +43,6 @@
     </distributionManagement>
 
     <scm>
-        <url>https://bintray.com/ndeverge/maven/SimpleXLSXWriter#</url>
+        <url>https://github.com/ndeverge/SimpleXLSXWriter</url>
     </scm>
 </project>
