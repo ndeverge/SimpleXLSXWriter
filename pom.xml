@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.incesoft.tools</groupId>
 	<artifactId>SimpleXLSXWriter</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 
     <name>SimpleXLSXWriter</name>
     <description>A really simple API to write Excel files (2007 and above), with no external dependencies. A forked of https://code.google.com/p/sjxslx/.</description>
@@ -24,6 +24,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
@@ -31,6 +32,19 @@
 					<optimize>true</optimize>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 
