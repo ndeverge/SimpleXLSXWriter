@@ -1,11 +1,10 @@
 package com.incesoft.tools.excel.xlsx;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * @author floyd
@@ -34,13 +33,14 @@ public class XLSXWriterSupport {
     }
 
     public void open() {
-        final URL emptyXLSX = getClass().getResource("/empty.xlsx");
-        if (emptyXLSX == null) {
-			throw new IllegalStateException("no empty.xlsx found in classpath");
-		}
         try {
-            workbook = new SimpleXLSXWorkbook(new File(emptyXLSX.toURI()));
-        } catch (URISyntaxException e) {
+            InputStream emptyXLSX = getClass().getResourceAsStream("/empty.xlsx");
+            File tempFile = File.createTempFile("empty",".xlsx");
+            tempFile.deleteOnExit();
+            Files.copy(emptyXLSX, tempFile.toPath());
+            workbook = new SimpleXLSXWorkbook(tempFile);
+
+        } catch (IOException e) {
             throw new IllegalStateException("no empty.xlsx found in classpath");
         }
     }
