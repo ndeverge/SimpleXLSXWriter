@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * @author floyd
@@ -32,11 +34,16 @@ public class XLSXWriterSupport {
     }
 
     public void open() {
-		if (getClass().getResource("/empty.xlsx") == null) {
+        final URL emptyXLSX = getClass().getResource("/empty.xlsx");
+        if (emptyXLSX == null) {
 			throw new IllegalStateException("no empty.xlsx found in classpath");
 		}
-		workbook = new SimpleXLSXWorkbook(new File(getClass().getResource("/empty.xlsx").getFile()));
-	}
+        try {
+            workbook = new SimpleXLSXWorkbook(new File(emptyXLSX.toURI()));
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("no empty.xlsx found in classpath");
+        }
+    }
 
 	private Sheet sheet;
 
