@@ -5,8 +5,19 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.incesoft.tools</groupId>
-	<artifactId>ince-excel</artifactId>
+	<artifactId>SimpleXLSXWriter</artifactId>
 	<version>1.0.0</version>
+
+    <name>SimpleXLSXWriter</name>
+    <description>A really simple API to write Excel files (2007 and above), with no external dependencies. A forked of https://code.google.com/p/sjxslx/.</description>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<build>
 		<plugins>
@@ -22,4 +33,16 @@
 			</plugin>
 		</plugins>
 	</build>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray</id>
+            <name>ndeverge-SimpleXLSXWriter</name>
+            <url>https://api.bintray.com/maven/ndeverge/maven/SimpleXLSXWriter/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
+    <scm>
+        <url>https://bintray.com/ndeverge/maven/SimpleXLSXWriter#</url>
+    </scm>
 </project>
