@@ -50,9 +50,9 @@
 
     <distributionManagement>
         <repository>
-            <id>bintray</id>
-            <name>ndeverge-SimpleXLSXWriter</name>
-            <url>https://api.bintray.com/maven/ndeverge/maven/SimpleXLSXWriter/;publish=1</url>
+            <id>mymavenrepo</id>
+            <name>mymavenrepo-SimpleXLSXWriter</name>
+            <url>https://mymavenrepo.com/repo/dukQxd8bxgHTFMPUdYTb/</url>
         </repository>
     </distributionManagement>
 
